@@ -202,17 +202,6 @@ int main() {
           .shiness = 1.f
         }
       );
-      mesh light(
-        "..\\res\\models\\shapes\\sphere.obj",
-        material{
-          .color = glm::vec3(.35f, 1.f, .51f),
-          .emissive = 1.f,
-          .ambiental = 1.f,
-          .diffusive = 1.f,
-          .specular = .0f,
-          .shiness = 1.f
-        }
-      );
       mesh plane(
         "..\\res\\models\\shapes\\cylinder.obj",
         material{
@@ -233,9 +222,6 @@ int main() {
       moon.scale(glm::vec3(12));
       moon.albedo("..\\res\\models\\moon\\moon_texture.png");
       moon.normal_map("..\\res\\models\\moon\\moon_normal_map.png");
-
-      light.position(glm::vec3(0, 4, 0));
-      light.scale(glm::vec3(.25f));
 
       house.position(glm::vec3(0, 8, 0));
       house.scale(glm::vec3(8));
@@ -303,7 +289,6 @@ int main() {
         moon.draw(window_context);
         floating.draw(window_context);
         house.draw(window_context);
-        light.draw(window_context);
         plane.draw(window_context);
         space.draw(window_context);
 
