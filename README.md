@@ -1,7 +1,8 @@
 # OpenGL Showcase
+![cover](https://github.com/rChimisso/opengl-showcase/assets/65339023/f7ccf797-0b17-476b-acb1-7704a81327ad)
 
 ## Table of Contents
-- ### [Extra features](#extra-features-1).
+- ### [Extra features](#extra-features-1)
 - ### [Procedural textures (Perlin Noise)](#procedural-textures-perlin-noise-1)
 - ### [Point lights](#point-lights-1)
 - ### [Normal map](#normal-map-1)
@@ -51,7 +52,7 @@ In this showcase, both the Sun and the Moon objects have a normal map applied, t
 To create realistic shadows, a shadow map for each light source is applied.  
 A shadow map is basically a render of the scene as seen from the light source point of view, creating a depth map and allowing to cast shadows from closer fragments on further ones.  
 However, despite this working well for a directional light whose rays are parallel and thus there is only one directions, for a point light whose rays go in all direction a simple 2D map won't suffice. To overcome this, a cubemap (for each point light) is used instead:  
-[INSERT IMAGE]  
+![cubemap](https://github.com/rChimisso/opengl-showcase/assets/65339023/28414225-f0c1-478f-baaa-fbb0e83ca5ea)  
 Each vertex of each triangle is processed by the `shadow.geom` geometry shader and projected onto each of the 6 faces of the cubemap. Next, the `shadow.frag` fragment shader calculates the new fragment depths as the normalized distance from the light source.  
 When this new data is passed to the `common.frag` fragment shader, the method `calculateShadow` calculates whether the current fragment is in shadow or exposed to light. This value is used as a multiplier for the light (more on how the light is calculated in the [Phong Light System](#phong-light-system-1) section) such that when the fragment is in shadow, the light is nullified, and when it's exposed, the light is left as is.  
 This works quite well, but there is a very important detail to not overlook: since point lights are pointlike, to make it look like spherical objects are emitting it, the light source needs to be positioned inside of them. This however, would make the light trapped inside the object that was supposed to emit it, as each ray casting from the light is blocked by the spherical object around it. The solution to this issue is as simple as not drawing shadows for the objects that are supposed to be emitting light, along with setting the emissive light component of the object material to some value greater than 0, and most likely also setting the material color to whichever light color there is.  
@@ -64,12 +65,12 @@ A skybox is just a cubemap applied to the camera view, such that in any directio
 ## Phong Light System
 The Phong Light System is a good approximation of local illumination.  
 It consists of one main equation:
-[INSERT IMAGE]
+![light equation](https://github.com/rChimisso/opengl-showcase/assets/65339023/52081780-87b4-41a7-83bf-076331d4d301)  
 Where all the `k`s are properties of the material, while all the `I`s are properties of the light (apart from the first which is a constant).  
 The first term is the emissive light component, the second one is the ambiental light component. Both of this are indipendent of any light source.  
 The terms in the summation are instead dependent on the specific light source, and depend also on certain angles: the first one is the diffusive component and indicates how much of the incident light is scattered by the surface, depending on the angle between the (normal of the) surface and the incident light; the second one is the specular component and indicates how much of the incident light is reflected, depending on the angle between the reflected light direction and the camera view direction.  
-Finally the attenuation function is defined as:
-[INSERT IMAGE]
+Finally the attenuation function is defined as:  
+![attenuation](https://github.com/rChimisso/opengl-showcase/assets/65339023/0765472a-9f13-4806-b7a0-25af4fff9456)  
 Decreasing the light intensity over distance based on the intensity reduction constants, properties of the light.
 
 This whole equation is applied for each channel color.  
