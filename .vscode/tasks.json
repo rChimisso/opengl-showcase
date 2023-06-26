@@ -1,0 +1,33 @@
+{
+  "tasks": [
+    {
+      "type": "cppbuild",
+      "label": "C/C++: g++.exe compila il file attivo",
+      "command": "g++",
+      "args": [
+        "-std=c++20",
+        "-g",
+        "${fileDirname}\\*.cpp",
+        "-Idir${fileDirname}",
+        "-lglfw3dll",
+        "-lglew32",
+        "-lopengl32",
+        "-lassimp",
+        "-o",
+        "${workspaceFolder}${pathSeparator}out${pathSeparator}${fileBasenameNoExtension}.exe"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "Attività generata dal debugger."
+    }
+  ],
+  "version": "2.0.0"
+}
