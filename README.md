@@ -5,17 +5,16 @@
 - ### [Extra features](#extra-features-1)
 - ### [Procedural textures (Perlin Noise)](#procedural-textures-perlin-noise-1)
 - ### [Point lights](#point-lights-1)
-- ### [Normal map](#normal-map-1)
 - ### [Shadow map](#shadow-map-1)
+- ### [Normal map](#normal-map-1)
 - ### [Skybox](#skybox-1)
 - ### [Phong Light System](#phong-light-system-1)
 
 ## Extra features
 - Procedural textures (Perlin Noise).
 - Point lights.
-- Normal map.
 - Shadow map.
-- Light map.
+- Normal map.
 - Skybox.
 
 ## Procedural textures (Perlin Noise)
@@ -42,12 +41,6 @@ While in the scene, each point light will illuminate all the scene it can see (d
 Without the [shadow map](#shadow-map-1), each point light would illuminate the scene regardless of the objects in front of it.  
 Many light properties come from the [Phong Light System](#phong-light-system-1).
 
-## Normal map
-Normal maps are essentialy textures to change the computed normals of an object, to add more variety to the normals of the object it is applied to.  
-They are stored as RGB images, where each color component corresponds to a change in the x, y or z normal component.  
-This has the effect of changing how the object surfaces interact with light, allowing for a more complex look without any extra geometry complexity.  
-In this showcase, both the Sun and the Moon objects have a normal map applied, the Moon being the one for which it is most noticeable. It is easy to see how the normal map makes the Moon look more knurled.
-
 ## Shadow map
 To create realistic shadows, a shadow map for each light source is applied.  
 A shadow map is basically a render of the scene as seen from the light source point of view, creating a depth map and allowing to cast shadows from closer fragments on further ones.  
@@ -58,13 +51,19 @@ When this new data is passed to the `common.frag` fragment shader, the method `c
 This works quite well, but there is a very important detail to not overlook: since point lights are pointlike, to make it look like spherical objects are emitting it, the light source needs to be positioned inside of them. This however, would make the light trapped inside the object that was supposed to emit it, as each ray casting from the light is blocked by the spherical object around it. The solution to this issue is as simple as not drawing shadows for the objects that are supposed to be emitting light, along with setting the emissive light component of the object material to some value greater than 0, and most likely also setting the material color to whichever light color there is.  
 Finally, talking about imaginary rays is nice and all, but how is this actually implemented? Simply put, the shadow map has a resolution in terms of the number of pixels used to create the dynamic shadow texture. The fewer pixels there are, the more the shadows are blocky and approximated. The more pixels, the smoother the shadows.
 
+## Normal map
+Normal maps are essentialy textures to change the computed normals of an object, to add more variety to the normals of the object it is applied to.  
+They are stored as RGB images, where each color component corresponds to a change in the x, y or z normal component.  
+This has the effect of changing how the object surfaces interact with light, allowing for a more complex look without any extra geometry complexity.  
+In this showcase, both the Sun and the Moon objects have a normal map applied, the Moon being the one for which it is most noticeable. It is easy to see how the normal map makes the Moon look more knurled.
+
 ## Skybox
 To give the illusion of a bigger and more filled space, a skybox is used.  
 A skybox is just a cubemap applied to the camera view, such that in any direction the camera looks at it will always see the cubemap texture when no objects are in front of it.
 
 ## Phong Light System
 The Phong Light System is a good approximation of local illumination.  
-It consists of one main equation:
+It consists of one main equation:  
 ![light equation](https://github.com/rChimisso/opengl-showcase/assets/65339023/52081780-87b4-41a7-83bf-076331d4d301)  
 Where all the `k`s are properties of the material, while all the `I`s are properties of the light (apart from the first which is a constant).  
 The first term is the emissive light component, the second one is the ambiental light component. Both of this are indipendent of any light source.  
